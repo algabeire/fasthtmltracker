@@ -1,7 +1,7 @@
 # main.py
 from fasthtml.common import *
 
-# --- 1. GLOBAL STYLING ARCHITECTURE (Defined first so fast_app can read it) ---
+# --- 1. GLOBAL STYLING ARCHITECTURE (Defined at top layer) ---
 STYLE = r"""
 @import url('https://googleapis.com');
 :root{--ink:#17201c;--muted:#738078;--line:#e3e9e2;--soft:#f4f7f2;--lime:#c7f36b;font-family:'DM Sans',sans-serif;color:var(--ink);background:#fafcf9}
@@ -50,16 +50,8 @@ STYLE = r"""
 .progress-fill{height:100%;border-radius:3px}.progress-fill.fill-housing{background:#a999ff}.progress-fill.fill-transport{background:#ffb35b}.progress-fill.fill-groceries{background:#ff887c}
 """
 
-# --- 2. INITIALIZE FASTHTML APP ---
+# --- 2. APP DECLARATION CORE ---
 app, rt = fast_app(hdrs=(Style(STYLE),))
-
-COLORS = {
-    "lime": "#c7f36b",
-    "ink": "#17201c",
-    "muted": "#738078",
-    "line": "#e3e9e2",
-    "soft": "#f4f7f2",
-}
 
 def icon(name, size=18):
     paths = {
@@ -76,11 +68,11 @@ def icon(name, size=18):
     }
     return NotStr(f'<svg class="icon" width="{size}" height="{size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">{paths[name]}</svg>')
 
-# --- 3. DASHBOARD PAGE ROUTE ---
+# --- 3. PAGE VIEW RENDERING ROUTE MAP ---
 @rt('/')
 def get():
     return Div(
-        # Sidebar Navigation
+        # Sidebar Panel
         Div(
             Div(Div("L", cls="brand-mark"), "Ledger", cls="brand"),
             Div("Menu", cls="nav-label"),
@@ -103,9 +95,9 @@ def get():
             cls="sidebar"
         ),
         
-        # Content Panel
+        # Primary Overview Shell
         Div(
-            # Top Action Bar
+            # Dynamic Headings Panel
             Div(
                 Div(P("Overview", cls="eyebrow"), H1("Ledger Budget Tracker")),
                 Div(
@@ -117,7 +109,7 @@ def get():
                 cls="topbar"
             ),
             
-            # Metric Balance Cards Group
+            # Numeric Financial Display Cards
             Div(
                 Div(
                     P("Total Net Balance", cls="eyebrow"), 
@@ -128,3 +120,6 @@ def get():
                 Div(
                     Div(P("Income Inflow"), Div(icon("wallet"), cls="stat-icon purple"), cls="stat-head"),
                     Div("$4,820.00", cls="stat-value"),
+                    Div(B("↑ $610"), "increased revenue streams", cls="stat-foot"),
+                    cls="card stat-card"
+                ),
