@@ -51,16 +51,52 @@ STYLE = r"""
 .bar-label{position:absolute;bottom:-26px;font:10px 'DM Mono';color:var(--muted)}
 .chart-legend{display:flex;gap:19px;margin-top:34px;font-size:11px;color:var(--muted)}
 .legend{display:flex;gap:6px;align-items:center}.dot{width:7px;height:7px;border-radius:2px;background:var(--ink)}
-.dot.income{background:#d8e4d7}.dot.current{background:var(--lime)}.budget-section{padding:23px}
+.dot.income{background:#d8e4d7}.dot.current{background:var(--lime)}
+.budget-section{padding:23px}
 .budget-row{display:flex;align-items:center;gap:10px;margin-top:20px}
 .budget-emoji{width:32px;height:32px;background:var(--soft);border-radius:8px;display:grid;place-items:center;font-size:15px}
 .budget-info{flex:1;min-width:0}.budget-title{font-size:12px;font-weight:600;display:flex;justify-content:space-between;margin-bottom:7px}
 .budget-title span{font:10px 'DM Mono';font-weight:400;color:var(--muted)}.progress{height:6px;background:var(--soft);border-radius:3px;overflow:hidden}
 .progress-fill{height:100%;border-radius:3px}.progress-fill.fill-housing{background:#a999ff}.progress-fill.fill-transport{background:#ffb35b}.progress-fill.fill-groceries{background:#ff887c}
+.spending-list{display:grid;gap:12px;margin-top:18px}
+.spending-item{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border:1px solid var(--line);border-radius:10px;background:#fff}
+.spending-item .left{display:flex;align-items:center;gap:12px;min-width:0}
+.spending-icon{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;background:var(--soft);font-size:16px}
+.spending-name{font-size:13px;font-weight:600;color:var(--ink)}
+.spending-meta{font-size:11px;color:var(--muted);margin-top:3px}
+.spending-amount{font-size:13px;font-weight:700;color:#d64b46}
+.spending-amount.positive{color:#1d8b58}
+.pie-card{display:flex;flex-direction:column;gap:18px;padding:23px}
+.pie-wrap{display:flex;justify-content:center;align-items:center;position:relative;margin-top:10px}
+.pie{width:148px;height:148px;border-radius:50%;background:conic-gradient(#a999ff 0 35%, #ffb35b 35% 62%, #ff887c 62% 82%, #7ad7a6 82% 100%);box-shadow:inset 0 0 0 1px rgba(23,32,28,.05)}
+.pie-center{position:absolute;inset:29px;background:#fff;border-radius:50%;display:grid;place-items:center;text-align:center;border:1px solid var(--line)}
+.pie-total{font:700 18px 'Space Grotesk';letter-spacing:-.7px}
+.pie-label{font:10px 'DM Mono';color:var(--muted);text-transform:uppercase}
+.legend-list{display:grid;gap:10px;margin-top:4px}
+.legend-row{display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:12px;color:var(--muted)}
+.legend-row .left{display:flex;align-items:center;gap:8px}
+.legend-dot{width:10px;height:10px;border-radius:3px}
+.legend-row strong{color:var(--ink)}
+@media (max-width: 760px){
+  .app-shell{flex-direction:column}
+  .sidebar{width:100%;padding:18px 14px}.nav{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .nav a{padding:10px 12px}
+  .main{padding:20px 16px 32px}
+  .topbar{flex-direction:column;align-items:flex-start;gap:12px}
+  .top-actions{width:100%;justify-content:space-between;flex-wrap:wrap}
+  .month-picker{padding:8px 10px}
+  .overview{grid-template-columns:1fr}
+  .content-grid{grid-template-columns:1fr}
+  .section{padding:18px 14px}
+  .pie-card{padding:18px 14px}
+  .chart{gap:8px;padding-left:8px}
+  .chart-legend{flex-wrap:wrap}
+  .spending-item{padding:10px 12px}
+}
 """
 
 # --- 2. APP DECLARATION CORE ---
-app, rt = fast_app(hdrs=(Style(STYLE),))
+app, rt = fast_app(hdrs=(Meta(name='viewport', content='width=device-width, initial-scale=1'), Style(STYLE)))
 
 def icon(name, size=18):
     paths = {
@@ -140,7 +176,118 @@ def get():
                 ),
                 cls="overview",
             ),
+
+            Div(
+                Div(
+                    Div(
+                        Div(
+                            H2("Recent spending"),
+                            P("This month", cls="muted"),
+                            cls="section-heading",
+                        ),
+                        Div(
+                            Div(
+                                Div(Span("🛒", cls="spending-icon"), Div(Strong("Groceries"), Div("Fresh market & pantry", cls="spending-meta"), cls="left-text"), cls="left"),
+                                Div("-$420.00", cls="spending-amount"),
+                                cls="spending-item",
+                            ),
+                            Div(
+                                Div(Span("🚗", cls="spending-icon"), Div(Strong("Transport"), Div("Fuel + parking", cls="spending-meta"), cls="left-text"), cls="left"),
+                                Div("-$190.00", cls="spending-amount"),
+                                cls="spending-item",
+                            ),
+                            Div(
+                                Div(Span("🍽️", cls="spending-icon"), Div(Strong("Dining"), Div("Restaurants & coffee", cls="spending-meta"), cls="left-text"), cls="left"),
+                                Div("-$260.00", cls="spending-amount"),
+                                cls="spending-item",
+                            ),
+                            Div(
+                                Div(Span("🏠", cls="spending-icon"), Div(Strong("Rent"), Div("Apartment payment", cls="spending-meta"), cls="left-text"), cls="left"),
+                                Div("-$1,250.00", cls="spending-amount"),
+                                cls="spending-item",
+                            ),
+                            cls="spending-list",
+                        ),
+                        cls="card section",
+                    ),
+                    Div(
+                        Div(
+                            H2("Budget status"),
+                            P("Updated today", cls="muted"),
+                            cls="section-heading",
+                        ),
+                        Div(
+                            Div(
+                                Div(Span("🏠", cls="budget-emoji"), Div(Strong("Housing"), Div("$1,350 / $1,800", cls="spending-meta"), cls="budget-info"), cls="budget-row"),
+                                Div(Div(cls='progress-fill fill-housing', style='width:75%'), cls='progress'),
+                            ),
+                            Div(
+                                Div(Span("🚗", cls="budget-emoji"), Div(Strong("Transport"), Div("$420 / $600", cls="spending-meta"), cls="budget-info"), cls="budget-row"),
+                                Div(Div(cls='progress-fill fill-transport', style='width:70%'), cls='progress'),
+                            ),
+                            Div(
+                                Div(Span("🛒", cls="budget-emoji"), Div(Strong("Groceries"), Div("$610 / $800", cls="spending-meta"), cls="budget-info"), cls="budget-row"),
+                                Div(Div(cls='progress-fill fill-groceries', style='width:76%'), cls='progress'),
+                            ),
+                            cls="budget-section",
+                        ),
+                        cls="card section",
+                    ),
+                    Div(
+                        Div(
+                            H2("Category spending"),
+                            P("Share of this month", cls="muted"),
+                            cls="section-heading",
+                        ),
+                        Div(
+                            Div(
+                                Div(
+                                    Div(cls='pie'),
+                                    Div(
+                                        Div("$2.3k", cls='pie-total'),
+                                        Div("Spent", cls='pie-label'),
+                                        cls='pie-center',
+                                    ),
+                                    cls='pie-wrap',
+                                ),
+                                Div(
+                                    Div(
+                                        Div(Span(cls='legend-dot', style='background:#a999ff'), Strong("Housing"), cls='left'),
+                                        Span("35%"),
+                                        cls='legend-row',
+                                    ),
+                                    Div(
+                                        Div(Span(cls='legend-dot', style='background:#ffb35b'), Strong("Transport"), cls='left'),
+                                        Span("27%"),
+                                        cls='legend-row',
+                                    ),
+                                    Div(
+                                        Div(Span(cls='legend-dot', style='background:#ff887c'), Strong("Groceries"), cls='left'),
+                                        Span("20%"),
+                                        cls='legend-row',
+                                    ),
+                                    Div(
+                                        Div(Span(cls='legend-dot', style='background:#7ad7a6'), Strong("Other"), cls='left'),
+                                        Span("18%"),
+                                        cls='legend-row',
+                                    ),
+                                    cls='legend-list',
+                                ),
+                                cls='pie-card',
+                            ),
+                            cls='card section',
+                        ),
+                        cls='content-grid',
+                    ),
+                    cls="content-grid",
+                ),
+                cls="main",
+            ),
             cls="main",
         ),
         cls="app-shell",
     )
+
+
+if __name__ == "__main__":
+    serve()
