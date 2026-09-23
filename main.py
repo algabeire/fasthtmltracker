@@ -165,9 +165,11 @@ def get():
 if __name__ == '__main__':
     serve()
 
+# Make sure the end of your main.py file looks exactly like this:
+
 # 3. Global CSS Layout Stylesheets
 STYLE = r"""
-@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
+@import url('https://googleapis.com');
 :root{--ink:#17201c;--muted:#738078;--line:#e3e9e2;--soft:#f4f7f2;--lime:#c7f36b;font-family:'DM Sans',sans-serif;color:var(--ink);background:#fafcf9}
 *{box-sizing:border-box}body{margin:0;background:#fafcf9;overflow-x:hidden}button,input,select{font:inherit}button{cursor:pointer;border:0}
 .icon{display:inline-block;vertical-align:middle}.app-shell{display:flex;min-height:100vh;width:100%}
@@ -178,3 +180,40 @@ STYLE = r"""
 .nav{display:grid;gap:5px}.nav a{display:flex;align-items:center;gap:13px;color:#99a69e;text-decoration:none;padding:12px 14px;border-radius:8px;font-size:14px}
 .nav a.active{background:#29362e;color:#f9fff5}.nav a.active .icon{color:var(--lime)}.nav a:hover{color:#f9fff5;background:#233029}
 .sidebar-bottom{margin-top:auto;border-top:1px solid #344139;padding-top:19px}
+.profile{display:flex;align-items:center;gap:10px;padding:10px 8px}.avatar{width:34px;height:34px;background:#f3a97d;color:var(--ink);border-radius:50%;display:grid;place-items:center;font:600 12px 'DM Mono'}
+.profile-text{font-size:12px}.profile-text small{display:block;color:#77847d;font-size:11px;margin-top:3px}
+.main{flex:1;min-width:0;padding:38px 48px 50px}.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:35px}
+.eyebrow{font:500 11px 'DM Mono';color:var(--muted);letter-spacing:.8px;text-transform:uppercase;margin:0 0 7px}
+.topbar h1{font:600 27px 'Space Grotesk';letter-spacing:-1px;margin:0}.top-actions{display:flex;align-items:center;gap:10px}
+.month-picker{border:1px solid var(--line);background:#fff;border-radius:7px;padding:10px 13px;display:flex;gap:15px;align-items:center;font-size:13px}
+.round-btn{background:#fff;border:1px solid var(--line);width:39px;height:39px;border-radius:50%;display:grid;place-items:center;color:var(--muted)}
+.add-btn{display:flex;align-items:center;gap:7px;background:var(--ink);color:#fff;border-radius:7px;padding:11px 15px;font-size:13px;font-weight:600}
+.add-btn .icon{color:var(--lime)}.overview{display:grid;grid-template-columns:minmax(270px,1.25fr) repeat(2,minmax(185px,1fr));gap:13px;margin-bottom:28px}
+.card{background:#fff;border:1px solid var(--line);border-radius:10px}
+.balance-card{background:var(--lime);border-color:var(--lime);padding:21px 23px 19px;position:relative;overflow:hidden;min-height:150px}
+.balance-amount{font:600 35px 'Space Grotesk';letter-spacing:-1.7px;margin:17px 0 11px;position:relative;z-index:2}
+.balance-trend{font:12px 'DM Mono';display:flex;gap:7px;align-items:center;position:relative;z-index:2}
+.stat-card{padding:21px 21px 16px;min-height:150px}.stat-head{display:flex;align-items:center;justify-content:space-between;color:var(--muted);font-size:12px}
+.stat-icon{width:27px;height:27px;border-radius:7px;display:grid;place-items:center}
+.stat-icon.purple{background:#eeeaff;color:#6b5bd3}.stat-icon.orange{background:#fff0de;color:#b36b15}
+.stat-value{font:600 26px 'Space Grotesk';margin:19px 0 9px;letter-spacing:-1px}.stat-foot{font-size:12px;color:var(--muted)}.stat-foot b{font-family:'DM Mono';color:#42a06c;margin-right:4px}
+.content-grid{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(280px,.8fr);gap:18px}
+.section{padding:23px}.section-heading{display:flex;justify-content:space-between;align-items:flex-start;width:100%}
+.section-heading h2{font:600 17px 'Space Grotesk';letter-spacing:-.4px;margin:0}.section-heading p{color:var(--muted);font-size:12px;margin:5px 0 0}
+.text-btn{display:flex;align-items:center;gap:5px;background:none;color:#506d5a;font-size:12px;font-weight:600;padding:3px}
+.chart{height:195px;display:flex;align-items:flex-end;gap:15px;border-bottom:1px solid var(--line);padding:0 4px 0 35px;position:relative;margin-top:20px;background:repeating-linear-gradient(to bottom,transparent 0,transparent 47px,#edf1ed 48px)}
+.bar-group{height:100%;flex:1;display:flex;align-items:flex-end;justify-content:center;gap:4px;position:relative;padding-top:12px}
+.bar{width:9px;border-radius:4px 4px 0 0;min-height:5px;transition:height .35s ease}
+.bar.income{background:#d8e4d7}.bar.expense{background:var(--ink)}.bar-group.current .bar.expense{background:var(--lime)}
+.bar-label{position:absolute;bottom:-26px;font:10px 'DM Mono';color:var(--muted)}
+.chart-legend{display:flex;gap:19px;margin-top:34px;font-size:11px;color:var(--muted)}
+.legend{display:flex;gap:6px;align-items:center}.dot{width:7px;height:7px;border-radius:2px;background:var(--ink)}
+.dot.income{background:#d8e4d7}.dot.current{background:var(--lime)}.budget-section{padding:23px}
+.budget-row{display:flex;align-items:center;gap:10px;margin-top:20px}
+.budget-emoji{width:32px;height:32px;background:var(--soft);border-radius:8px;display:grid;place-items:center;font-size:15px}
+.budget-info{flex:1;min-width:0}.budget-title{font-size:12px;font-weight:600;display:flex;justify-content:space-between;margin-bottom:7px}
+.budget-title span{font:10px 'DM Mono';font-weight:400;color:var(--muted)}.progress{height:6px;background:var(--soft);border-radius:3px;overflow:hidden}
+.progress-fill{height:100%;border-radius:3px}.progress-fill.fill-housing{background:#a999ff}.progress-fill.fill-transport{background:#ffb35b}.progress-fill.fill-groceries{background:#ff887c}
+""" 
+# Make sure those three triple quotes are present right above this line!
+
