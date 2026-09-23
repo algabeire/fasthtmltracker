@@ -24,13 +24,22 @@ STYLE = r"""
 .add-btn{display:flex;align-items:center;gap:7px;background:var(--ink);color:#fff;border-radius:7px;padding:11px 15px;font-size:13px;font-weight:600}
 .add-btn .icon{color:var(--lime)}.overview{display:grid;grid-template-columns:minmax(270px,1.25fr) repeat(2,minmax(185px,1fr));gap:13px;margin-bottom:28px}
 .card{background:#fff;border:1px solid var(--line);border-radius:10px}
-.balance-card{background:var(--lime);border-color:var(--lime);padding:21px 23px 19px;position:relative;overflow:hidden;min-height:150px}
-.balance-amount{font:600 35px 'Space Grotesk';letter-spacing:-1.7px;margin:17px 0 11px;position:relative;z-index:2}
-.balance-trend{font:12px 'DM Mono';display:flex;gap:7px;align-items:center;position:relative;z-index:2}
-.stat-card{padding:21px 21px 16px;min-height:150px}.stat-head{display:flex;align-items:center;justify-content:space-between;color:var(--muted);font-size:12px}
+.balance-card{background:#fff;border-color:var(--line);padding:21px 23px 19px;position:relative;overflow:hidden;min-height:150px}
+.balance-card .eyebrow{color:var(--muted)}
+.balance-amount{font:600 35px 'Space Grotesk';letter-spacing:-1.7px;margin:17px 0 11px;position:relative;z-index:2;color:var(--ink)}
+.balance-trend{font:12px 'DM Mono';display:flex;gap:7px;align-items:center;position:relative;z-index:2;color:var(--muted)}
+.stat-card{padding:21px 21px 16px;min-height:150px;border:1px solid var(--line)}
+.stat-card.spending{background:#ffe9e7;border-color:#ffd4cf}
+.stat-card.income{background:#e8f9ee;border-color:#d1f3df}
+.stat-head{display:flex;align-items:center;justify-content:space-between;color:var(--muted);font-size:12px}
 .stat-icon{width:27px;height:27px;border-radius:7px;display:grid;place-items:center}
 .stat-icon.purple{background:#eeeaff;color:#6b5bd3}.stat-icon.orange{background:#fff0de;color:#b36b15}
-.stat-value{font:600 26px 'Space Grotesk';margin:19px 0 9px;letter-spacing:-1px}.stat-foot{font-size:12px;color:var(--muted)}.stat-foot b{font-family:'DM Mono';color:#42a06c;margin-right:4px}
+.stat-card.spending .stat-icon{background:#ffd7d2;color:#d64b46}
+.stat-card.income .stat-icon{background:#d7f3df;color:#1d8b58}
+.stat-value{font:600 26px 'Space Grotesk';margin:19px 0 9px;letter-spacing:-1px;color:var(--ink)}
+.stat-foot{font-size:12px;color:var(--muted)}
+.stat-card.spending .stat-foot b{font-family:'DM Mono';color:#da4b45;margin-right:4px}
+.stat-card.income .stat-foot b{font-family:'DM Mono';color:#1d8b58;margin-right:4px}
 .content-grid{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(280px,.8fr);gap:18px}
 .section{padding:23px}.section-heading{display:flex;justify-content:space-between;align-items:flex-start;width:100%}
 .section-heading h2{font:600 17px 'Space Grotesk';letter-spacing:-.4px;margin:0}.section-heading p{color:var(--muted);font-size:12px;margin:5px 0 0}
@@ -82,19 +91,19 @@ def get():
                 A(icon("wallet"), "Wallets", href="#"),
                 A(icon("repeat"), "Transactions", href="#"),
                 A(icon("settings"), "Settings", href="#"),
-                cls="nav"
+                cls="nav",
             ),
             Div(
                 Div(
                     Div("AG", cls="avatar"),
-                    Div(b("Ali Gabayare"), Small("Premium Workspace"), cls="profile-text"),
-                    cls="profile"
+                    Div(B("Ali Gabayare"), Small("Premium Workspace"), cls="profile-text"),
+                    cls="profile",
                 ),
-                cls="sidebar-bottom"
+                cls="sidebar-bottom",
             ),
-            cls="sidebar"
+            cls="sidebar",
         ),
-        
+
         # Primary Overview Shell
         Div(
             # Dynamic Headings Panel
@@ -104,22 +113,34 @@ def get():
                     Div("September 2026", icon("chevron"), cls="month-picker"),
                     Button(icon("bell"), cls="round-btn"),
                     Button(icon("plus"), "Add Record", cls="add-btn"),
-                    cls="top-actions"
+                    cls="top-actions",
                 ),
-                cls="topbar"
+                cls="topbar",
             ),
-            
+
             # Numeric Financial Display Cards
             Div(
                 Div(
-                    P("Total Net Balance", cls="eyebrow"), 
+                    P("Total Net Balance", cls="eyebrow"),
                     Div("$14,240.50", cls="balance-amount"),
                     Div("Active Growth: ", Strong("+12.4% vs last month"), cls="balance-trend"),
-                    cls="card balance-card"
+                    cls="card balance-card",
                 ),
                 Div(
-                    Div(P("Income Inflow"), Div(icon("wallet"), cls="stat-icon purple"), cls="stat-head"),
+                    Div(P("Spending"), Div(icon("wallet"), cls="stat-icon"), cls="stat-head"),
+                    Div("$2,310.40", cls="stat-value"),
+                    Div(B("↓ $280"), "from last month", cls="stat-foot"),
+                    cls="card stat-card spending",
+                ),
+                Div(
+                    Div(P("Income Inflow"), Div(icon("wallet"), cls="stat-icon"), cls="stat-head"),
                     Div("$4,820.00", cls="stat-value"),
                     Div(B("↑ $610"), "increased revenue streams", cls="stat-foot"),
-                    cls="card stat-card"
+                    cls="card stat-card income",
                 ),
+                cls="overview",
+            ),
+            cls="main",
+        ),
+        cls="app-shell",
+    )
